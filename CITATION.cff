@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Support Leakage Makes Rapid Quantum Maintenance Singular: Soft Spectral Filters and Exponent Transmutation in Dual-Rail SSH Codes"
+type: article
+authors:
+  - family-names: Eriksson
+    given-names: Lluis
+date-released: 2026-07-12
+license: CC-BY-4.0
+repository-code: "https://github.com/lluiseriksson/support-leakage-rapid-maintenance"
+abstract: "First-order support leakage produces a universal t log(1/t) free-energy loss and changes the remote-boundary SSH maintenance exponent under soft spectral filtering."

@@ -1,0 +1,636 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathtools,amsthm,bm}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{booktabs,enumitem,graphicx,xcolor}
+\usepackage{authblk}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\definecolor{ink}{HTML}{17243A}
+\definecolor{muted}{HTML}{526079}
+\hypersetup{pdftitle={Support Leakage Makes Rapid Quantum Maintenance Singular},pdfauthor={Lluis Eriksson},pdfsubject={Soft spectral filters and exponent transmutation in dual-rail SSH codes}}
+\setlength{\parindent}{1.15em}
+\setlength{\parskip}{0.15em}
+\emergencystretch=1.5em
+\hfuzz=0.5pt
+\hbadness=2000
+\setlist{nosep,leftmargin=1.8em}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Support leakage and rapid quantum maintenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\D}{\mathcal D}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\hc}{\mathrm{h.c.}}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Tr}{Tr}
+\title{\textcolor{ink}{\bfseries Support Leakage Makes Rapid Quantum\\Maintenance Singular}\\[0.5em]\large Soft Spectral Filters and Exponent Transmutation in Dual-Rail SSH Codes}
+\author{Lluis Eriksson}
+\affil{Independent Researcher}
+\date{12 July 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Exact rapid maintenance behaves singularly at the boundary of quantum state space. Let a finite-dimensional target $\rho$ have support projector $P$, and let an uncontrolled quantum Markov semigroup have outward support-leakage rate $a=\operatorname{Tr}\bigl[(1-P)L(\rho)\bigr]$. We prove that, whenever $a>0$, the nonequilibrium free-energy loss has the universal short-time form
+\[
+F(\rho)-F(\exp(tL)\rho)=k_{\mathrm B} T a t \log(1/t)+O(t)\mathpunct{.}
+\]
+Under an explicit fresh-resource-cell ledger, the optimal period-$t$ exact-refresh power therefore diverges as $k_{\mathrm B} T a \log(1/t)$. For GKLS generators, $a$ is a positive sum of squared support-crossing jump amplitudes. We prove the complete dichotomy: $a>0$ gives logarithmically infinite rapid power, while $a=0$ gives finite rapid power even when Hamiltonian rotation produces population outside the fixed initial support at second order. We also define a periodic threshold-reset corridor and prove its sharp $k_{\mathrm B} T a \log(1/r)+O(1)$ small-corridor law.
+The general singularity has an unexpected geometric consequence. In a fixed-parity dual-rail SSH code, a boundary transfer has desired logical weight $w_x^{2}$, but its exact summed zero-mode-to-bulk weight is $w_x(1-w_x)$. At the remote boundary, these scale respectively as $\Theta(\zeta^{4\ell})$ and $\Theta(\zeta^{2\ell})$. Thus a soft spectral tail changes the exponential rate of bounded-latency refresh from $4|\log \zeta|$ to $2|\log \zeta|$ unless the tail itself is suppressed at least as $\zeta^{2\ell}$. We prove the more general rate formula $\min\{4m,2m+q\}$, where $m=-\log \zeta$ and $q$ is the exponential suppression rate of the spectral tail. Exact rapid maintenance and the wide-membrane limit do not commute: every nonzero tail gives infinite rapid power at fixed width, while fixed-period power still vanishes exponentially with width. The result turns perfect filtering from a technical convenience into the sharp boundary between finite and singular exact maintenance.
+\end{abstract}
+\section{Maintenance at the boundary of state space}
+For a faithful thermal reference
+\[
+\gamma=\exp(-\beta H)/\operatorname{Tr} \exp(-\beta H)\mathpunct{,}
+\]
+write
+\[
+F(\rho)=\operatorname{Tr}(H \rho)-k_{\mathrm B} T S(\rho)\mathpunct{.}
+\]
+Only free-energy differences will be used. Let $T_t=\exp(tL)$ be an uncontrolled quantum Markov semigroup and let $\rho$ be the target. The target need not be faithful. Denote its support projector by $P$ and set $Q=1-P$.
+The key quantity is the outward support-leakage rate
+\[
+a_L(\rho)=\operatorname{Tr}\bigl[Q L(\rho)\bigr]\mathpunct{.}
+\]
+Positivity of $T_t(\rho)$ for $t\ge 0$ implies $a_L(\rho)\ge 0$. The case $a_L(\rho)>0$ means that population appears outside the target support at first order in time.
+This paper distinguishes three tasks.
+\begin{itemize}
+\item \textbf{Fixed-period exact refresh.} Free evolution for time $\tau$ is followed by an exact restoration to $\rho$.
+\item \textbf{Rapid exact maintenance.} The fixed-period optimum is taken first and then $\tau\to 0$.
+\item \textbf{Periodic threshold corridor.} Exact refreshes are periodic, while the probability outside $P$ may not exceed a tolerance $r$ during a cycle.
+\end{itemize}
+The third task is an explicitly restricted periodic protocol class. We do not identify it with the optimum over arbitrary autonomous feedback controllers.
+\subsection{Novelty boundary}
+The nonanalyticity of von Neumann entropy at rank-deficient states is standard matrix analysis. In particular, Grace and Guha derive perturbation formulas for support-extending quantum states whose kernel term contains the same nonanalytic entropy contribution. The contributions here are its operational conversion into an exact-maintenance power theorem, the positive GKLS support-crossing formula, the complete finite/infinite rapid-power dichotomy, the threshold-corridor law, the exact SSH leakage sum rule, and the resulting exponent and order-of-limits theorems. We do not claim a new perturbation theory for entropy, a new weak-coupling derivation of Davies generators, or a general autonomous controller.
+\section{Universal support-leakage expansion}
+We first isolate the finite-dimensional analytic fact used throughout.
+\begin{theorem}[Boundary free-energy expansion]
+Let $\rho_t$ be a twice differentiable path of density matrices for $t\ge 0$ with
+\[
+\rho_t=\rho+t X+O(t^{2})
+\]
+in operator norm. Let $P=\operatorname{supp}(\rho)$, $Q=1-P$, and
+\[
+a=\operatorname{Tr}(QX)\mathpunct{.}
+\]
+Then $QXQ\ge 0$, $a\ge 0$, and
+\[
+S(\rho_t)-S(\rho)=a t \log(1/t)+O(t)\mathpunct{.}
+\]
+Consequently, for every fixed Hamiltonian $H$,
+\[
+F(\rho)-F(\rho_t)=k_{\mathrm B} T a t \log(1/t)+O(t)\mathpunct{.}
+\]
+If $a>0$, then
+\[
+\lim_{t\downarrow 0}\bigl[F(\rho)-F(\rho_t)\bigr]/t=+\infty\mathpunct{.}
+\]
+If $a=0$, then
+\[
+S(\rho_t)-S(\rho)=O(t)+O(t^{2} \log(1/t))
+\]
+and $\bigl[F(\rho)-F(\rho_t)\bigr]/t$ has a finite one-sided limit.
+\end{theorem}
+\begin{proof}
+Positivity of $\rho_t$ on the kernel of $\rho$ gives $QXQ\ge 0$. Let its positive eigenvalues, including multiplicity, be $\mu_1,\ldots,\mu_s$; their sum is $a$. Degenerate perturbation theory at the zero eigenvalue gives the eigenvalues emerging from the kernel as
+\[
+\lambda_j(t)=t \mu_j+O(t^{2})
+\]
+for $\mu_j>0$; directions with $\mu_j=0$ contribute $o(t \log(1/t))$. Their entropy contribution is
+\[
+\begin{gathered}
+-\sum_{j} \lambda_j(t)\log \lambda_j(t) \\
+=a t \log(1/t)-t \sum_{j} \mu_j \log \mu_j+O(t)\mathpunct{.}
+\end{gathered}
+\]
+The eigenvalues initially inside $P$ stay bounded away from zero and contribute only $O(t)$. This proves the entropy expansion. If $a=0$, positivity and $QXQ\ge 0$ imply $QXQ=0$; kernel eigenvalues can then emerge only at order $t^{2}$ or higher, producing $O(t^{2} \log(1/t))$, while the support eigenvalues retain an ordinary first derivative. Since $\operatorname{Tr}\bigl[H(\rho-\rho_t)\bigr]=O(t)$, the energy term cannot change the singular coefficient and always has a finite derivative.
+\end{proof}
+\begin{remark}[Refined coefficient]
+If every positive $\mu_j$ is retained, then the kernel contribution has the sharper form
+\[
+a t \log(1/t)+a t\bigl[H(p)-\log a\bigr]+O(t)\mathpunct{,}
+\]
+where $p_j=\mu_j/a$ and $H(p)=-\sum_{j} p_j \log p_j$. This spectral entropy can grow as the logarithm of the number of leakage modes, but it cannot change an exponential rate when that number grows subexponentially.
+\end{remark}
+\begin{corollary}[GKLS leakage formula]
+Let
+\[
+L(\rho)=-i\bigl[K,\rho\bigr]+\sum_{j} \gamma_j \mathcal{D}\bigl[L_j\bigr](\rho)\mathpunct{,}
+\]
+where $\gamma_j\ge 0$ and
+\[
+\mathcal{D}\bigl[L\bigr](\rho)=L \rho L^{\dagger}-\frac{1}{2}\{L^{\dagger} L,\rho\}\mathpunct{.}
+\]
+Then
+\[
+\begin{gathered}
+a_L(\rho)=\sum_{j} \gamma_j \operatorname{Tr}\bigl[Q L_j \rho L_j^{\dagger}\bigr] \\
+=\sum_{j} \gamma_j \lVert Q L_j \sqrt{\rho}\rVert_2^{2}\mathpunct{.}
+\end{gathered}
+\]
+If $\rho$ is faithful on $P$, then $a_L(\rho)=0$ if and only if
+\[
+Q L_j P=0
+\]
+for every $j$ with $\gamma_j>0$.
+\end{corollary}
+\begin{proof}
+The Hamiltonian term has zero $Q$ trace because $Q\rho=\rho Q=0$. The two anticommutator terms also have zero $Q$ trace by cyclicity and the same support identities. Only $L_j \rho L_j^{\dagger}$ remains, giving the squared Hilbert-Schmidt norm. Faithfulness on $P$ makes $\sqrt{\rho}$ invertible on that subspace, proving the final equivalence.
+\end{proof}
+The corollary upgrades the usual qualitative statement that a code is invariant. It identifies the exact coefficient controlling the thermodynamic singularity when invariance fails. A Hamiltonian may rotate $P$ into $Q$ and create $\operatorname{Tr}(Q\rho_t)=O(t^{2})$ relative to the fixed initial support, but unitary rotation preserves rank and cannot create the first-order kernel spectrum responsible for the divergence.
+\section{Exact-refresh power and the singular rapid limit}
+We use a fully specified resource-cell model. At the end of a free interval, the system may interact with a Gibbs bath and fresh resource cells through a unitary commuting with the sum of their Hamiltonians. The cost is the decrease of the resource marginals' nonequilibrium free energies; final bath athermality and correlations are discarded and not credited back.
+The standard multipartite relative-entropy ledger gives, for every exact restoration from $\rho_\tau=T_\tau(\rho)$ to $\rho$,
+\[
+W_\tau\ge F(\rho)-F(\rho_\tau)\mathpunct{.}
+\]
+An identical fresh cell prepared in $\rho$ and an energy-conserving SWAP attain equality. Therefore the optimal fixed-period power in this operational class is
+\[
+P_\tau^*(\rho,L)=\bigl[F(\rho)-F(T_\tau \rho)\bigr]/\tau\mathpunct{.}
+\]
+This equality prices preloaded target cells; it is not a work-only autonomous controller.
+\begin{theorem}[Singular rapid-maintenance dichotomy]
+Let $a=a_L(\rho)$.
+\begin{itemize}
+\item If $a>0$, then
+\end{itemize}
+\[
+P_\tau^*(\rho,L)=k_{\mathrm B} T a \log(1/\tau)+O(1)
+\]
+and $\lim_{\tau\downarrow 0}P_\tau^*=+\infty$.
+\begin{itemize}
+\item If $a=0$, then $P_\tau^*(\rho,L)=O(1)$ and its one-sided rapid limit is finite. This includes Hamiltonian rotations of the support and dissipative support extension beginning only at second or higher order.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+Apply Theorem 2.1 to $\rho_\tau=\exp(\tau L)\rho$ and use the exact fixed-period ledger equality. When $a=0$, the possible kernel contribution is $O(\tau^{2} \log(1/\tau))$; after division by $\tau$ it vanishes, while the support and energy derivatives remain finite.
+\end{proof}
+Thus arbitrarily weak leakage and exactly zero leakage are not perturbatively equivalent for rapid exact maintenance.
+\begin{theorem}[Periodic threshold-corridor law]
+Assume $a>0$. Let
+\[
+q(t)=\operatorname{Tr}\bigl[Q T_t(\rho)\bigr]
+\]
+and, for sufficiently small $r>0$, let $\tau_r$ be the largest time in a fixed short-time interval for which $q(t)\le r$ for all $0\le t\le \tau_r$. Define the best periodic exact-refresh power compatible with that corridor by
+\[
+P_per(r)=\inf_{0<\tau\le \tau_r} P_\tau^*(\rho,L)\mathpunct{.}
+\]
+Then
+\[
+\tau_r=r/a+O(r^{2})
+\]
+and
+\[
+P_per(r)=k_{\mathrm B} T a \log(1/r)+O(1)
+\]
+as $r\downarrow 0$.
+\end{theorem}
+\begin{proof}
+Since $q(t)=a t+O(t^{2})$ and $a>0$, $q$ is strictly increasing on a sufficiently short interval and inversion gives $\tau_r=r/a+O(r^{2})$. Theorem 3.1 is uniform on that interval in the form
+\[
+P_\tau^*=k_{\mathrm B} T a \log(1/\tau)+O(1)\mathpunct{.}
+\]
+For every $\tau\le \tau_r$, $\log(1/\tau)\ge \log(1/\tau_r)$. Choosing $\tau=\tau_r$ supplies the matching upper bound. Finally,
+\[
+a \log(1/\tau_r)=a \log(1/r)+a \log a+o(1)\mathpunct{,}
+\]
+and the constant $a \log a$ is absorbed into $O(1)$.
+\end{proof}
+The corridor removes the infinity only by keeping a nonzero tolerance. Its small-tolerance price is logarithmic and has the same leakage coefficient as the exact singularity.
+\section{Block-respecting leakage and dimension control}
+The SSH application has additional structure. Starting from the logical code, the secular Davies jumps create populations in orthogonal bulk sectors but no logical-bulk coherence. Hence
+\[
+\rho_t=(1-q_t)\sigma_t \oplus q_t \chi_t\mathpunct{,}
+\]
+with normalized states $\sigma_t$ and $\chi_t$. The entropy identity
+\[
+S(\rho_t)=h_2(q_t)+(1-q_t)S(\sigma_t)+q_t S(\chi_t)
+\]
+is exact.
+\begin{proposition}[Leakage entropy bounds]
+Suppose $q_t\le 1/2$ and the leakage block has dimension at most $d_Q$. Then
+\[
+\begin{gathered}
+h_2(q_t)+(1-q_t)S(\sigma_t) \\
+\le S(\rho_t)\le  \\
+h_2(q_t)+(1-q_t)S(\sigma_t)+q_t \log d_Q\mathpunct{.}
+\end{gathered}
+\]
+If $q_t=a t+O(t^{2})$, these bounds reproduce the coefficient $a$ in Theorem 2.1 and show that dimension dependence enters only through $a t \log d_Q$.
+\end{proposition}
+\begin{proof}
+Use the direct-sum entropy identity and $0\le S(\chi_t)\le \log d_Q$.
+\end{proof}
+For a family with $\log d_Q=o(\ell)$, this factor cannot alter the exponential rate in membrane width.
+\section{Fixed-parity dual-rail SSH code}
+We now derive a microscopic family in which desired logical transitions and support leakage have different geometric powers.
+Take two identical odd SSH rails $r=0,1$, each with sites
+$A_{r,0},\ldots,A_{r,\ell}$ and $B_{r,0},\ldots,B_{r,\ell-1}$.
+The number-conserving Hamiltonian is
+\[
+H_\ell=\sum_{r\in \{0,1\}} \bigl[\Delta_r N_r+\sum_{j=0}^{\ell-1}\bigl[t_1 a_{r,j}^{\dagger} b_{r,j}+t_2 a_{r,j+1}^{\dagger} b_{r,j}+\mathrm{h.c.}\bigr]\bigr]\mathpunct{,}
+\]
+where $0<t_1<t_2$, $\zeta=t_1/t_2<1$, and $\Delta_r>t_1+t_2$. Put $\delta=\Delta_1-\Delta_0>0$.
+Each rail has an exact zero singular mode
+\[
+\begin{gathered}
+f_{0,r}^{\dagger}=\sum_{j=0}^{\ell} \psi_j a_{r,j}^{\dagger}\mathpunct{,} \\
+\psi_j=N_\ell(-\zeta)^j\mathpunct{,} \\
+N_\ell^{2}=(1-\zeta^{2})/(1-\zeta^{2\ell+2})\mathpunct{.}
+\end{gathered}
+\]
+The other single-particle energies are $\Delta_r\pm s_k$, where
+\[
+s_k^{2}=t_1^{2}+t_2^{2}+2t_1t_2 \cos\bigl[k \pi/(\ell+1)\bigr]
+\]
+and $s_k>t_2-t_1$ uniformly in $\ell$.
+The logical code is
+\[
+\mathcal{H}_{\log}=\operatorname{span}\{\lvert 0_L\rangle{},\lvert 1_L\rangle{}\}\mathpunct{,}
+\]
+$\lvert 0_L\rangle{}=f_{0,0}^{\dagger}\lvert vac\rangle{}$,  $\lvert 1_L\rangle{}=f_{0,1}^{\dagger}\lvert vac\rangle{}$.
+Both states have total number one and odd fermion parity, so arbitrary coherence inside the code is physical under parity superselection.
+At corresponding boundary sites $x$, use the even number-conserving transfer
+\[
+S_x=a_{1,x}^{\dagger} a_{0,x}
+\]
+and its adjoint. The interaction with a thermal reservoir is parity respecting and conserves system fermion number. In the Davies decomposition, the desired logical frequency is $\delta$, while zero-mode-to-bulk frequencies are $\delta\pm s_k$.
+Define the single-rail boundary weight
+\[
+w_x=|\psi_x|^{2}\mathpunct{.}
+\]
+\begin{proposition}[Exact logical and leakage sum rules]
+For a transfer from rail zero to rail one,
+\[
+|\langle 1_L\rvert{}S_x\lvert 0_L\rangle{}|^{2}=w_x^{2}\mathpunct{.}
+\]
+Summed over every bulk eigenmode $f_{k,1}$ of the destination rail,
+\[
+\sum_{k} |\langle k,1\rvert{}S_x\lvert 0_L\rangle{}|^{2}=w_x(1-w_x)\mathpunct{.}
+\]
+The reverse transfer obeys the same identities.
+\end{proposition}
+\begin{proof}
+Expand the boundary field on either rail as
+\[
+a_{r,x}=\psi_x f_{0,r}+\sum_{k} u_{xk}f_{k,r}\mathpunct{.}
+\]
+Acting on $\lvert 0_L\rangle{}$,
+\[
+S_x\lvert 0_L\rangle{}=\psi_x\bigl[\overline{\psi_x}\lvert 1_L\rangle{}+\sum_{k} \overline{u_{xk}}\lvert k,1\rangle{}\bigr]\mathpunct{.}
+\]
+The logical squared amplitude is $w_x^{2}$. Completeness of the single-particle eigenbasis at site $x$ gives
+\[
+\sum_{k} |u_{xk}|^{2}=1-|\psi_x|^{2}=1-w_x\mathpunct{,}
+\]
+which proves the leakage identity.
+\end{proof}
+This is the microscopic hinge: the desired transition must find the zero mode on both rails, whereas leakage needs the zero mode only on the occupied source rail and may land anywhere in the orthogonal destination space.
+\begin{corollary}[Remote-boundary powers]
+At $x=\ell$,
+\[
+w_{\mathrm{far}}=(1-\zeta^{2})\zeta^{2\ell}/(1-\zeta^{2\ell+2})
+\]
+and
+\[
+(1-\zeta^{2})\zeta^{2\ell}\le w_{\mathrm{far}}\le \zeta^{2\ell}\mathpunct{.}
+\]
+For $\ell\ge 1$,
+\[
+\begin{gathered}
+(1-\zeta^{2})^{2} \zeta^{2\ell} \\
+\le w_{\mathrm{far}}(1-w_{\mathrm{far}})\le \zeta^{2\ell}\mathpunct{,}
+\end{gathered}
+\]
+while
+\[
+(1-\zeta^{2})^{2} \zeta^{4\ell}\le w_{\mathrm{far}}^{2}\le \zeta^{4\ell}\mathpunct{.}
+\]
+\end{corollary}
+\begin{proof}
+The weight bounds follow from the exact geometric normalization. Since $w_{\mathrm{far}}\le \zeta^{2\ell}\le \zeta^{2}$, one has $1-w_{\mathrm{far}}\ge 1-\zeta^{2}$. Multiply the bounds.
+\end{proof}
+\section{Soft filters and a uniform leakage coefficient}
+An exact filter sets the bath spectrum to zero at every zero-mode-to-bulk Bohr frequency. A soft filter instead leaves small nonzero coefficients.
+Let $\varepsilon_\ell\ge 0$ measure the tail amplitude. Assume the Davies coefficients at every relevant zero-mode-to-bulk frequency obey the two-sided envelope
+\[
+g_- \varepsilon_\ell\le G_{rk}^{tail}\le g_+ \varepsilon_\ell\mathpunct{,}
+\]
+where $0<g_-\le g_+<\infty$ are independent of $\ell$, the direction $r$, and the bulk label $k$. This assumption holds, for example, when a fixed positive continuous tail profile is multiplied by $\varepsilon_\ell$ on the compact bulk-frequency bands. If only an upper envelope is known, only the upper bounds below survive.
+Let $\rho$ be any faithful logical density matrix, with logical populations $p_0,p_1>0$. The coherences do not enter the outward trace because distinct secular jumps land in orthogonal bulk sectors.
+\begin{theorem}[Uniform microscopic leakage bounds]
+For a soft-filtered bath coupled at $x$, the outward support-leakage coefficient satisfies
+\[
+\begin{gathered}
+g_- \varepsilon_\ell w_x(1-w_x) \\
+\le a_{\ell,x}(\rho)\le  \\
+g_+ \varepsilon_\ell w_x(1-w_x)\mathpunct{.}
+\end{gathered}
+\]
+At the remote boundary,
+\[
+\begin{gathered}
+g_- \varepsilon_\ell(1-\zeta^{2})^{2} \zeta^{2\ell} \\
+\le a_{\ell,\mathrm{far}}(\rho)\le  \\
+g_+ \varepsilon_\ell \zeta^{2\ell}\mathpunct{.}
+\end{gathered}
+\]
+\end{theorem}
+\begin{proof}
+Corollary 2.3 expresses $a$ as the sum of support-crossing squared jump amplitudes. In the forward direction their unweighted sum is $p_0 w_x(1-w_x)$; in the reverse direction it is $p_1 w_x(1-w_x)$. Since $p_0+p_1=1$, applying the coefficient envelope gives the first pair of bounds. Corollary 5.2 gives the remote bounds.
+\end{proof}
+The constants are volume independent. No rate-inheritance assumption is imported: the rates are computed from the microscopic boundary matrix elements.
+\begin{lemma}[Uniform crossing-generator norm]
+Let $C_\ell^{\mathrm{cross}}$ be the sum of all Davies dissipators whose jumps connect the logical and one-particle bulk blocks, including both KMS directions. On Hermitian operators, with the induced trace norm,
+\[
+\begin{gathered}
+\lVert C_\ell^{\mathrm{cross}}\rVert_{1\to 1} \\
+\le 8 g_+ \varepsilon_\ell w_x(1-w_x) \\
+\le C_c a_{\ell,x}(\rho)\mathpunct{,}
+\end{gathered}
+\]
+where
+\[
+C_c=8g_+/g_-\mathpunct{.}
+\]
+Moreover, in the interaction picture of the bare logical Hamiltonian there is a width-independent constant $M_*$ such that
+\[
+\lVert L_\ell(\rho)\rVert_1\le M_*\mathpunct{.}
+\]
+\end{lemma}
+\begin{proof}
+For every jump $J$,
+\[
+\lVert \mathcal{D}\bigl[J\bigr]\rVert_{1\to 1}\le 2\lVert J\rVert^{2}\mathpunct{.}
+\]
+There are two rail directions and their two KMS reverse directions. Proposition 5.1 makes the sum of squared support-crossing amplitudes in each rail direction $w_x(1-w_x)$. Applying the upper spectral envelope and the dissipator bound gives the factor eight. Theorem 6.1 gives $a_{\ell,x}\ge g_- \varepsilon_\ell w_x(1-w_x)$, proving the ratio bound.
+On the initial logical state, bulk-bulk terms vanish. The desired logical generator has uniformly bounded coefficients and operator norm, while the crossing contribution is bounded above by the first inequality and $\varepsilon_\ell,w_x\le 1$. Their sum supplies a finite $M_*$ independent of width.
+\end{proof}
+\begin{corollary}[Exact corridor coefficient]
+For every fixed finite $\ell$ with $\varepsilon_\ell>0$, the periodic threshold-corridor power obeys
+\[
+\lim_{r\downarrow 0} P_{per,\ell}(r)/\log(1/r)=k_{\mathrm B} T a_{\ell,\mathrm{far}}(\rho)\mathpunct{.}
+\]
+Consequently the coefficient of the logarithmic corridor divergence has two-sided scaling
+\[
+\Theta(\varepsilon_\ell \zeta^{2\ell})\mathpunct{.}
+\]
+\end{corollary}
+\begin{proof}
+Combine Theorem 3.2 with Theorem 6.1.
+\end{proof}
+\section{Exponent transmutation at fixed latency}
+The rapid limit is infinite for every nonzero tail at fixed width. A different and experimentally natural question fixes a short refresh time $\tau>0$ and asks how the power scales as the membrane is widened.
+Let $P_{\ell,\tau}$ denote the exact resource-cell refresh power after free evolution for this fixed $\tau$. Assume:
+\begin{itemize}
+\item the desired logical Davies coefficients are bounded above and below independently of $\ell$, so their scale is $s_\ell=\Theta(w_{\mathrm{far}}^{2})$;
+\item the soft-tail envelope of Section 6 holds;
+\item the logical and tail Davies components satisfy detailed balance with the same faithful Gibbs reference;
+\item the Davies dynamics maps an initially logical state into a direct sum of logical and bulk blocks;
+\item the number of one-particle leakage modes grows subexponentially, here linearly in $\ell$;
+\item the logical target is nonthermal for the unit-strength logical dissipator.
+\end{itemize}
+Write
+\[
+m=-\log \zeta>0
+\]
+and suppose the tail amplitude has an exponential rate
+$\varepsilon_\ell=\exp\bigl[-q \ell+o(\ell)\bigr]$,  $q\ge 0$.
+\begin{lemma}[Fixed-time leakage mass]
+There exists a width-independent $\tau_0>0$ such that for every fixed $0<\tau\le \tau_0$,
+\[
+\begin{gathered}
+\frac{1}{2}\tau a_{\ell,\mathrm{far}} \\
+\le \operatorname{Tr}\bigl[Q T_\tau^{(\ell)}(\rho)\bigr]\le  \\
+(3/2)\tau a_{\ell,\mathrm{far}}
+\end{gathered}
+\]
+for every $\ell$. One admissible choice is
+\[
+\tau_0=\min{1,(C_c M_*)^{-1}}\mathpunct{,}
+\]
+with the explicit width-independent constants of Lemma 6.2.
+\end{lemma}
+\begin{proof}
+Write $L_\ell=B_\ell+C_\ell^{\mathrm{cross}}$, where $B_\ell$ preserves the logical and bulk blocks separately. For every block-diagonal Hermitian $X$,
+\[
+\operatorname{Tr}\bigl[Q B_\ell(X)\bigr]=0\mathpunct{.}
+\]
+Thus, with $q_\ell(t)=\operatorname{Tr}\bigl[Q T_t^{(\ell)}(\rho)\bigr]$,
+\[
+q_\ell^{\prime}(t)=\operatorname{Tr}\bigl[Q C_\ell^{\mathrm{cross}} T_t^{(\ell)}(\rho)\bigr]
+\]
+and $q_\ell^{\prime}(0)=a_{\ell,\mathrm{far}}$. Complete positivity and trace preservation make $T_t^{(\ell)}$ contractive in trace norm on Hermitian operators. Since the generator commutes with its semigroup,
+\[
+\begin{gathered}
+\lVert T_t^{(\ell)}(\rho)-\rho\rVert_1 \\
+\le \int_{0}^{t} \lVert T_s^{(\ell)}L_\ell(\rho)\rVert_1 ds \\
+\le t M_*\mathpunct{.}
+\end{gathered}
+\]
+Therefore Lemma 6.2 gives
+\[
+\begin{gathered}
+|q_\ell^{\prime}(t)-a_{\ell,\mathrm{far}}| \\
+\le \lVert C_\ell^{\mathrm{cross}}\rVert_{1\to 1} t M_* \\
+\le C_c M_* a_{\ell,\mathrm{far}} t\mathpunct{.}
+\end{gathered}
+\]
+Integration yields the explicit remainder
+\[
+\begin{gathered}
+|q_\ell(t)-t a_{\ell,\mathrm{far}}| \\
+\le \frac{1}{2}C_c M_* a_{\ell,\mathrm{far}} t^{2}\mathpunct{.}
+\end{gathered}
+\]
+The displayed choice of $\tau_0$ turns this into the two-sided bound. This calculation is the resummed Dyson estimate: the crossing norm appears once, while all remaining words are controlled by semigroup contractivity rather than counted mode by mode.
+\end{proof}
+\begin{lemma}[Uniform free-energy sandwich]
+Let $q_\ell=\operatorname{Tr}\bigl[Q T_\tau^{(\ell)}(\rho)\bigr]$ and let $d_{Q,\ell}$ be the one-particle leakage-block dimension. For each fixed $0<\tau\le \tau_0$ there exist positive width-independent constants $c_0(\tau),C_0(\tau),C_1(\tau)$ and $\ell_0(\tau)$ such that, for $\ell\ge \ell_0(\tau)$,
+\[
+\begin{gathered}
+c_0(\tau) s_\ell+(k_{\mathrm B} T/\tau)q_\ell \log(1/q_\ell)-C_1(\tau) q_\ell \\
+\le P_{\ell,\tau}\le  \\
+C_0(\tau) s_\ell+(k_{\mathrm B} T/\tau)q_\ell\bigl[\log(1/q_\ell)+1+\log d_{Q,\ell}\bigr]+C_1(\tau) q_\ell\mathpunct{.}
+\end{gathered}
+\]
+\end{lemma}
+\begin{proof}
+Let $T_t^0$ denote the exact-filter semigroup, extended trivially on the initially empty bulk block, and put $\eta_\ell=T_\tau^0(\rho)$. At zero tail, differentiability in the logical rate gives
+\[
+\bigl[F(\rho)-F(T_\tau^{ideal}(\rho))\bigr]/\tau=c_* s_\ell+O(s_\ell^{2})
+\]
+with $c_*=c_*(\tau)>0$, because the faithful logical target is nonthermal for the primitive unit-strength logical dissipator. Choose $\ell_0(\tau)$ so that this term lies between two positive multiples $c_0(\tau)s_\ell$ and $C_0(\tau)s_\ell$ after absorbing the quadratic remainder.
+For nonzero tail the state is the exact direct sum
+\[
+(1-q_\ell)\sigma_\ell \oplus q_\ell \chi_\ell\mathpunct{.}
+\]
+The required analytic remainder can be bounded without expanding Dyson words. Duhamel's formula and trace-norm contractivity of the two CPTP semigroups give
+\[
+\begin{gathered}
+\lVert T_\tau^{(\ell)}(\rho)-T_\tau^0(\rho)\rVert_1 \\
+\le \int_{0}^{\tau} \lVert C_\ell^{\mathrm{cross}} T_s^0(\rho)\rVert_1 ds \\
+\le \tau \lVert C_\ell^{\mathrm{cross}}\rVert_{1\to 1} \\
+\le \tau C_c a_{\ell,\mathrm{far}}\le 2C_c q_\ell\mathpunct{,}
+\end{gathered}
+\]
+where the last inequality is Lemma 7.1. If $A_\ell=P T_\tau^{(\ell)}(\rho)P=(1-q_\ell)\sigma_\ell$, compression and normalization therefore yield, for all sufficiently large $\ell$,
+\[
+\lVert \sigma_\ell-\eta_\ell\rVert_1\le 2(2C_c+1)q_\ell\mathpunct{.}
+\]
+Let $\lambda_*=\lambda_{\min}(\rho)/2$. Decreasing $\tau_0$ once, if necessary, ensures $\eta_\ell\ge \lambda_*P$ uniformly: the ideal logical rate is at most one and the logical generator is width bounded. The preceding estimate then gives $\sigma_\ell\ge (\lambda_*/2)P$ for $\ell\ge \ell_0(\tau)$. On this fixed faithful two-dimensional neighborhood, both entropy and logical energy are Lipschitz. If $E_*$ bounds the single-particle energy band, one may take, for example,
+\[
+K_*=E_*+k_{\mathrm B} T\bigl[1+|\log(\lambda_*/2)|\bigr]
+\]
+as a width-independent Lipschitz constant for the logical free energy. Hence the logical-block perturbation contributes at most $2K_*(2C_c+1)q_\ell/\tau$ to the power. The bulk energy contributes at most $2E_*q_\ell/\tau$; these terms are absorbed into the displayed $C_1(\tau)q_\ell$.
+The only nonanalytic terms are therefore those explicit in the direct-sum entropy. For $0<q\le 1/2$,
+\[
+q \log(1/q)\le h_2(q)\le q\bigl[\log(1/q)+1\bigr]\mathpunct{.}
+\]
+Finally $0\le S(\chi_\ell)\le \log d_{Q,\ell}$. Insert these bounds into the exact direct-sum entropy identity and divide the free-energy loss by $\tau$. This proves both inequalities with constants independent of width and makes every mode-count dependence explicit.
+\end{proof}
+\begin{theorem}[Soft-filter exponent transmutation]
+For every fixed $0<\tau\le \tau_0$,
+\[
+\begin{gathered}
+\lim_{\ell\to \infty}-\frac{1}{\ell}\log P_{\ell,\tau} \\
+=\min\{4m,2m+q\}\mathpunct{.}
+\end{gathered}
+\]
+More explicitly, when $q<2m$, the leakage contribution has the form
+\[
+P_{\ell,\tau}=\exp\bigl[-(2m+q)\ell+o(\ell)\bigr]
+\]
+and dominates the ideal logical term $\exp\bigl[-4m \ell+O(1)\bigr]$. For a fixed nonzero soft tail, $q=0$, the exponential rate is halved from $4m$ to $2m$.
+\end{theorem}
+\begin{proof}
+By Theorem 6.1 and Lemma 7.1, the leakage mass satisfies
+\[
+q_\ell(\tau)=\exp\bigl[-(2m+q)\ell+o(\ell)\bigr]\mathpunct{.}
+\]
+Lemma 7.2 now supplies explicit upper and lower bounds. The analytic logical terms have rate $4m$. The binary leakage term has rate $2m+q$, because $\log(1/q_\ell)=\Theta(\ell)$. The leakage-block dimension is linear in $\ell$, so $q_\ell \log d_{Q,\ell}$ has the same exponential rate. For fixed $\tau$, the $C_1(\tau)q_\ell$ remainder lacks the growing logarithm and cannot cancel the lower bound. Hence the slower of $4m$ and $2m+q$ determines the logarithmic limit.
+\end{proof}
+\begin{corollary}[Filter-quality threshold]
+The ideal exponent $4m$ survives if and only if the tail is suppressed at exponential rate
+\[
+q\ge 2m\mathpunct{,}
+\]
+equivalently
+\[
+\varepsilon_\ell\le \exp\bigl[-2m \ell+o(\ell)\bigr]=\zeta^{2\ell+o(\ell)}\mathpunct{.}
+\]
+A width-independent fabrication floor in the filter therefore changes the asymptotic law even when its amplitude is arbitrarily small.
+\end{corollary}
+\section{Noncommuting limits}
+The soft-filter family exhibits a sharp order-of-limits effect.
+\begin{theorem}[Rapid-control and wide-membrane limits do not commute]
+Assume $\varepsilon_\ell>0$ for every finite $\ell$ and no persistent near channel. Then
+\[
+\lim_{\ell\to \infty} \lim_{\tau\downarrow 0} P_{\ell,\tau}=+\infty\mathpunct{,}
+\]
+whereas
+\[
+\lim_{\tau\downarrow 0} \lim_{\ell\to \infty} P_{\ell,\tau}=0\mathpunct{.}
+\]
+With an exact filter, $\varepsilon_\ell=0$, the rapid power is finite and scales as $\Theta(\zeta^{4\ell})$.
+\end{theorem}
+\begin{proof}
+At every finite width, Theorem 6.1 gives $a_{\ell,\mathrm{far}}>0$; Theorem 3.1 makes the inner rapid limit infinite. For the opposite order it is enough to take any fixed $0<\tau\le \tau_0$: Theorem 7.3 makes the power vanish exponentially with $\ell$, and the subsequent $\tau\downarrow 0$ limit remains zero. Under exact filtering the logical support is invariant, and the ordinary finite entropy-production formula applies with scale $w_{\mathrm{far}}^{2}$.
+\end{proof}
+This is a singular perturbation, not a small correction to the exact-filter rapid theorem.
+\section{Scope of microscopic exactness}
+The SSH statements concern the Davies generators obtained after the standard weak-coupling limit at each fixed finite $\ell$. The single-particle bulk gap $t_2-t_1$ permits a width-independent separation between the logical and zero-to-bulk frequency bands. We do not claim a weak-coupling convergence estimate uniform in $\ell$, nor do we interchange the microscopic coupling limit with $\ell\to \infty$.
+The two-sided tail envelope is an explicit physical assumption. A continuous positive spectral profile on the compact unwanted-frequency bands supplies it; a spectrum with additional zeros may reduce leakage and requires its own envelope. Bulk-to-bulk transitions do not affect the initial leakage coefficient because they annihilate the no-bulk target, although they matter at longer times.
+The fixed-period and corridor equalities use fresh target-state cells. They quantify a declared scalar free-energy ledger and do not solve autonomous work-only stabilization. The divergence theorem is nevertheless a lower bound within that enlarged operational class: restricting the controller cannot make exact rapid maintenance cheaper.
+\section{Numerical verification}
+The analytic claims were checked independently in finite precision.
+\begin{itemize}
+\item \textbf{Boundary coefficient.} For a rank-two state in dimension four and a support-crossing GKLS jump, the direct coefficient and the squared-jump formula agreed exactly. A regression of refresh power against $\log(1/t)$ over the seven smallest times recovered $a=0.2583$ with error $1.6e-7$.
+\item \textbf{Finite branch and uniform short-time control.} A Hamiltonian that rotates the target support produced zero entropy drift to machine precision, while $q(t)/t$ fell to $3.1e-8$, confirming the $a=0$ branch. In the leaking example, $q(t)/(a t)$ stayed between $0.9687$ and $1.0000$ for $10^{-4}\le t\le 10^{-1}$, well inside the theorem's explicit short-time corridor.
+\item \textbf{SSH completeness.} For $t_1=0.37$, $t_2=1$, and $\ell=2,\ldots,40$, the largest error in the exact far-boundary weight was $3.5e-18$; the largest residual in the leakage identity $w(1-w)$ was $3.5e-18$.
+\item \textbf{Exponent separation.} The fitted logarithmic slopes differed from $4 \log \zeta$ and $2 \log \zeta$ by $2.3e-5$ and $6.1e-5$, respectively.
+\end{itemize}
+The calculations use direct diagonalization of each odd SSH rail and matrix exponentiation of the finite GKLS generator. They diagnose the formulas but are not substitutes for the proofs.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{support\_leakage\_phase\_diagram.png}
+\caption{Left: exact SSH weights for zeta=0.72. Center: the theorem-scale exact-filter term and soft-tail asymptotic at fixed tau=0.08 and epsilon=0.002, showing the change from the fourth to the second geometric power. Right: exact relative-entropy refresh power of a finite reversible star model at ell=8, compared with a log(1/tau)+O(1). The verification suite in Section 10 separately uses zeta=0.37 for direct diagonalization.}
+\label{fig:diagnostics}
+\end{figure}
+\section{Relation to prior work}
+Davies generators and Spohn's entropy-production identity provide the equilibrium open-system framework. Recent work develops systematic constructions of Lindbladians with prescribed steady states and perturbative guarantees for approximate thermalization. Those results control fixed points and mixing; the present question is different: the target is rank deficient, exact restoration is repeated, and the relevant nonanalyticity occurs at the initial boundary point.
+Resource-theoretic work shows that nonequilibrium free energy governs asymptotic state conversion, while collision-model studies price the restoration of coherent states. The fresh-copy ledger used here is deliberately explicit. The new conclusion is that even this permissive controller has infinite rapid exact-refresh power when the uncontrolled generator leaks out of the target support.
+Grace and Guha's support-extending perturbation expansion identifies the known nonanalytic kernel contribution to von Neumann entropy. Theorems 2.1 and 7.3 instead identify its exact positive GKLS flow coefficient, price it in an operational refresh task, and turn it into a microscopic geometric exponent law.
+\section{Status, limitations, and falsification}
+Proved here:
+\begin{itemize}
+\item the universal $t \log(1/t)$ free-energy loss for first-order support leakage;
+\item the complementary finite rapid-power branch when first-order leakage vanishes, including Hamiltonian support rotation;
+\item the positive GKLS support-crossing formula and invariant-support criterion;
+\item infinite exact rapid-refresh power under the resource-cell ledger;
+\item the sharp small-corridor coefficient for periodic threshold resets;
+\item the exact dual-rail SSH sum rule $w(1-w)$;
+\item volume-independent two-sided leakage-rate bounds and an explicit uniform fixed-time estimate;
+\item a free-energy sandwich with every leakage-dimension dependence exposed;
+\item the exponent formula $\min\{4m,2m+q\}$;
+\item noncommutation of the rapid-control and wide-membrane limits.
+\end{itemize}
+Not proved:
+\begin{itemize}
+\item optimality of periodic threshold resets among arbitrary autonomous corridor controllers;
+\item uniform-in-width error bounds for the pre-Davies microscopic weak-coupling dynamics;
+\item a work-only implementation that does not consume preloaded target cells;
+\item the same exponent theorem for interacting many-body bulk spectra.
+\end{itemize}
+The central claim is falsified if any support-crossing jump with positive Davies coefficient fails to produce the coefficient in Corollary 2.3, or if the exact SSH completeness sum differs from $w_x(1-w_x)$. The exponent theorem is conditional on the stated two-sided spectral envelope; measuring a different tail envelope changes $q$ and therefore changes the predicted exponent through the displayed minimum formula.
+\appendix
+\section{Short derivation of the resource ledger}
+Let the initial global state be
+\[
+\rho_\tau\otimes \gamma_B \bigotimes_{j} \omega_j
+\]
+and let an energy-conserving unitary produce final state $\Omega_f$ with system marginal $\rho$. Against the product Gibbs reference,
+\[
+D(\Omega_f\Vert \Gamma_{\mathrm{tot}})=\sum_{i} D(\Omega_{f,i}\Vert \gamma_i)+I_{\mathrm{tot}}(\Omega_f)\mathpunct{.}
+\]
+Invariance of global relative entropy under the allowed unitary gives
+\[
+\begin{gathered}
+\sum_{j}\bigl[F(\omega_j)-F(\Omega_{f,R_j})\bigr] \\
+=F(\rho)-F(\rho_\tau)+F_B^{\mathrm{ex}}(\Omega_{f,B})+k_{\mathrm B} T I_{\mathrm{tot}}(\Omega_f) \\
+\ge F(\rho)-F(\rho_\tau)\mathpunct{.}
+\end{gathered}
+\]
+An identical cell in $\rho$ and SWAP attain equality. For the dual-rail code, the canonical graded fermionic SWAP is even and number conserving; on the odd-odd one-particle sector its exchange sign is global.
+\section{Positivity and off-diagonal blocks}
+The leading entropy coefficient depends only on $QXQ$. Off-diagonal blocks $PXQ+QXP$ cannot generate a first-order negative kernel eigenvalue because positivity of $\rho+tX+O(t^{2})$ forces the Schur complement constraint. They affect the nonzero support eigenvalues and the kernel eigenvalues only at analytic or higher order once $QXQ$ is fixed. Hence they enter the $O(t)$ term but not $a t \log(1/t)$.
+\section*{References}
+\begin{enumerate}[label={[\arabic*]},leftmargin=2.2em]
+\item E. B. Davies, \emph{Markovian master equations}, Commun. Math. Phys. 39, 91-110 (1974).
+\item H. Spohn, \emph{Entropy production for quantum dynamical semigroups}, J. Math. Phys. 19, 1227-1230 (1978).
+\item K. M. R. Audenaert, \emph{A sharp continuity estimate for the von Neumann entropy}, J. Phys. A 40, 8127-8136 (2007), arXiv:quant-ph/0610146.
+\item M. R. Grace and S. Guha, \emph{Perturbation Theory for Quantum Information}, arXiv:2106.05533 (2021).
+\item T. Kato, \emph{Perturbation Theory for Linear Operators}, Springer (1995 reprint).
+\item F. G. S. L. Brandao, M. Horodecki, J. Oppenheim, J. M. Renes, and R. W. Spekkens, \emph{Resource Theory of Quantum States Out of Thermal Equilibrium}, Phys. Rev. Lett. 111, 250404 (2013), arXiv:1111.3882.
+\item G. Vacanti, C. Elouard, and A. Auffeves, \emph{The work cost of keeping states with coherences out of thermal equilibrium}, arXiv:1503.01974 (2015).
+\item J. Guo, O. Hart, C.-F. Chen, A. J. Friedman, and A. Lucas, \emph{Designing open quantum systems with known steady states: Davies generators and beyond}, arXiv:2404.14538 (2024).
+\item H. Chen, Z. Ding, and R. Zhang, \emph{Overcoming the Lamb Shift in System-Bath Interaction Models via KMS Detailed Balance: High-Accuracy Thermalization with Time-Bounded Interactions}, arXiv:2604.15616 (2026).
+\item J. Kumar, A. Lazarides, and T. Ala-Nissila, \emph{Thermodynamics of Coherence-Selective Quantum Reset Protocols}, arXiv:2604.17152 (2026).
+\item S. Szalay, Z. Zimboras, M. Mate, G. Barcza, C. Schilling, and O. Legeza, \emph{Fermionic systems for quantum information people}, arXiv:2006.03087 (2020).
+\item N. T. Vidal, M. L. Bera, A. Riera, M. Lewenstein, and M. N. Bera, \emph{Quantum Operations in an Information Theory for Fermions}, Phys. Rev. A 104, 032411 (2021), arXiv:2102.09074.
+\item W. P. Su, J. R. Schrieffer, and A. J. Heeger, \emph{Solitons in polyacetylene}, Phys. Rev. Lett. 42, 1698-1701 (1979).
+\item L. Eriksson, \emph{Maintenance Is Not Restoration: Endpoint No-Go Theorems, Exact SSH Resource Horizons, and Quantum Rapid-Replacement Equality}, submitted preprint (2026).
+\end{enumerate}
+\end{document}
