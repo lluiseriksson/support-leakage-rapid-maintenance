@@ -2,8 +2,9 @@
 
 This repository is the reproducibility package for the paper
 
-> **Support Leakage Makes Rapid Quantum Maintenance Singular**  
-> *Soft Spectral Filters and Exponent Transmutation in Dual-Rail SSH Codes*  
+> **Support Leakage Makes Rapid Quantum Maintenance Singular**
+>
+> *Soft Spectral Filters and Exponent Transmutation in Dual-Rail SSH Codes*
 > Lluis Eriksson (2026)
 
 The paper proves that first-order leakage out of the support of a rank-deficient target produces a universal
